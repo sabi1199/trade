@@ -13,7 +13,8 @@ REFRESH_INTERVAL_SEC = 5
 
 AVAILABLE_PAIRS = [
     "EUR/USD", "GBP/USD", "USD/JPY",
-    "AUD/USD", "USD/CAD", "EUR/GBP"
+    "AUD/USD", "USD/CAD", "USD/CHF",
+    "NZD/USD", "EUR/JPY", "EUR/GBP"
 ]
 
 VALID_USERS = {
@@ -22,7 +23,7 @@ VALID_USERS = {
 }
 
 def login():
-    st.title("🔐 Forex Signal App Login")
+    st.title("🔐 Forex Signal App Login💰")
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
     if st.button("Login"):
@@ -214,6 +215,14 @@ else:
 # --- Main GUI ---
 symbols = st.multiselect("Currency Pairs", AVAILABLE_PAIRS, default=["EUR/USD"])
 date_input = st.date_input("Select Date", datetime.now())
+
+# --- API Health Indicator ---
+any_symbol = symbols[0] if symbols else "EUR/USD"
+candles, is_healthy = fetch_data(any_symbol, date_input.strftime("%Y-%m-%d"))
+if is_healthy:
+    st.success("🟢 API Health: Running")
+else:
+    st.error("🔴 API Health: Problem Occurred")
 mode = st.selectbox("Mode", ["Backtest", "Live"])
 col1, col2 = st.columns([1, 2])
 with col1:
@@ -251,4 +260,3 @@ if st.session_state.app_running:
             st.info("No trades placed yet.")
 else:
     st.warning("App is stopped. Click ▶ Start App to begin.")
-    
