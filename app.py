@@ -104,7 +104,7 @@ def run_signal_engine(candles):
             continue
 
         results.append({
-            "Time": signal_time,
+            "Time": datetime.strptime(signal_time, '%Y-%m-%d %H:%M:%S').strftime('%Y-%m-%d %H:%M:%S'),
             "Action": action,
             "Entry": entry_candle['datetime'],
             "Exit": exit_candle['datetime'],
@@ -176,3 +176,4 @@ if st.session_state.app_running:
                 st.error("Could not fetch data from API.")
 else:
     st.warning("App is stopped. Click ▶ Start App to begin.")
+        
