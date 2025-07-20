@@ -20,7 +20,7 @@ VALID_USERS = {
 }
 
 def login():
-    st.title("🔐 Forex Signal App Login")
+    st.title("🔐 Forex Signal App Login..!")
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
     if st.button("Login"):
