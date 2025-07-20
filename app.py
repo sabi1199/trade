@@ -14,6 +14,23 @@ AVAILABLE_PAIRS = [
     "AUD/USD", "USD/CAD", "EUR/GBP"
 ]
 
+VALID_USERS = {
+    "admin": "admin123",
+    "user1": "pass123"
+}
+
+def login():
+    st.title("🔐 Forex Signal App Login")
+    username = st.text_input("Username")
+    password = st.text_input("Password", type="password")
+    if st.button("Login"):
+        if username in VALID_USERS and VALID_USERS[username] == password:
+            st.session_state.logged_in = True
+            st.success("Login successful. Reloading...")
+            st.rerun()
+        else:
+            st.error("Invalid username or password.")
+
 @st.cache_data(show_spinner=False)
 def fetch_data(symbol, date_str):
     start = f"{date_str} 00:00:00"
@@ -102,6 +119,22 @@ def run_signal_engine(candles):
 
 # Streamlit UI
 st.set_page_config(page_title="Forex Signal Engine", layout="wide")
+
+# --- Login Check ---
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+
+if not st.session_state.logged_in:
+    login()
+    st.stop()
+
+# --- Logout Button ---
+with st.sidebar:
+    if st.button("🔓 Logout"):
+        st.session_state.logged_in = False
+        st.success("Logged out successfully.")
+        st.rerun()
+
 st.title("📈 Forex Signal Engine")
 
 symbols = st.multiselect("Currency Pairs", AVAILABLE_PAIRS, default=["EUR/USD"])
