@@ -22,7 +22,7 @@ VALID_USERS = {
 }
 
 def login():
-    st.title("🔐 Forex Signal App Login💲")
+    st.title("🔐 Forex Signal App Login")
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
     if st.button("Login"):
@@ -180,6 +180,18 @@ if not st.session_state.logged_in:
     st.stop()
 
 # --- Sidebar Controls ---
+st.sidebar.markdown("### ⚙️ Auto Trade Control")
+if "auto_trade_enabled" not in st.session_state:
+    st.session_state.auto_trade_enabled = False
+
+if st.sidebar.button("🚀 Turn ON Auto Trade"):
+    st.session_state.auto_trade_enabled = True
+
+if st.sidebar.button("🛑 Turn OFF Auto Trade"):
+    st.session_state.auto_trade_enabled = False
+
+st.sidebar.write(f"**Auto Trade Status:** {'🟢 ON' if st.session_state.auto_trade_enabled else '🔴 OFF'}")
+
 with st.sidebar:
     if st.button("🔓 Logout"):
         st.session_state.logged_in = False
@@ -190,6 +202,14 @@ with st.sidebar:
     tp = st.number_input("Take Profit ($)", min_value=1.0, value=10.0, step=1.0)
     sl = st.number_input("Stop Loss ($)", min_value=1.0, value=10.0, step=1.0)
     st.session_state.view_mode = st.radio("View", ["Signals", "Trade Results"])
+
+# --- API Health Indicator ---
+any_symbol = symbols[0] if symbols else "EUR/USD"
+candles, is_healthy = fetch_data(any_symbol, date_input.strftime("%Y-%m-%d"))
+if is_healthy:
+    st.success("🟢 API Health: Running")
+else:
+    st.error("🔴 API Health: Problem Occurred")
 
 # --- Main GUI ---
 symbols = st.multiselect("Currency Pairs", AVAILABLE_PAIRS, default=["EUR/USD"])
@@ -219,7 +239,7 @@ if st.session_state.app_running:
             if is_healthy and candles:
                 with st.expander(f"📡 {symbol} Backtest Signals"):
                     run_signal_engine_gui(symbol, candles)
-    elif mode == "Live":
+    elif mode == "Live" and st.session_state.auto_trade_enabled:
         auto_trade_if_live(I_want_money, symbols, trade_amount, tp, sl)
 
     if st.session_state.view_mode == "Trade Results":
