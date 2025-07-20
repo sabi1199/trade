@@ -23,7 +23,7 @@ VALID_USERS = {
 }
 
 def login():
-    st.title("🔐 Forex Signal App Login💰")
+    st.title("🔐 Forex Signal App Login💰💰💰")
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
     if st.button("Login"):
@@ -204,6 +204,12 @@ with st.sidebar:
     sl = st.number_input("Stop Loss ($)", min_value=1.0, value=10.0, step=1.0)
     st.session_state.view_mode = st.radio("View", ["Signals", "Trade Results"])
 
+
+
+# --- Main GUI ---
+symbols = st.multiselect("Currency Pairs", AVAILABLE_PAIRS, default=["EUR/USD"])
+date_input = st.date_input("Select Date", datetime.now())
+
 # --- API Health Indicator ---
 any_symbol = symbols[0] if symbols else "EUR/USD"
 candles, is_healthy = fetch_data(any_symbol, date_input.strftime("%Y-%m-%d"))
@@ -211,10 +217,6 @@ if is_healthy:
     st.success("🟢 API Health: Running")
 else:
     st.error("🔴 API Health: Problem Occurred")
-
-# --- Main GUI ---
-symbols = st.multiselect("Currency Pairs", AVAILABLE_PAIRS, default=["EUR/USD"])
-date_input = st.date_input("Select Date", datetime.now())
 
 # --- API Health Indicator ---
 any_symbol = symbols[0] if symbols else "EUR/USD"
