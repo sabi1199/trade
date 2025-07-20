@@ -9,7 +9,7 @@ from iqoptionapi.stable_api import IQ_Option
 
 API_KEY = 'a9efceaa17e34769bd79c9a40ae9bd67'
 TIMEZONE = 'Asia/Kolkata'
-REFRESH_INTERVAL_SEC = 5
+REFRESH_INTERVAL_SEC = 30
 
 AVAILABLE_PAIRS = [
     "EUR/USD", "GBP/USD", "USD/JPY",
@@ -23,7 +23,7 @@ VALID_USERS = {
 }
 
 def login():
-    st.title("🔐 Forex Signal App Login💰💰💰")
+    st.title("🔐 Forex Signal App Login💰💰")
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
     if st.button("Login"):
