@@ -25,7 +25,7 @@ VALID_USERS = {
 }
 
 def login():
-    st.title("🔐 Forex Signal App Login..")
+    st.title("🔐 Forex Signal App Login")
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
     if st.button("Login"):
@@ -115,8 +115,8 @@ def run_signal_engine_gui(symbol, candles):
             losses += 1
 
         current_win_rate = (wins / total) * 100 if total else 0
-        if current_win_rate < 75:
-            continue
+        # if current_win_rate < 75:
+#     continue
 
         # Convert UTC signal time to IST
         utc = pytz.timezone('UTC')
@@ -124,6 +124,7 @@ def run_signal_engine_gui(symbol, candles):
         dt_utc = utc.localize(datetime.strptime(signal_time, '%Y-%m-%d %H:%M:%S'))
         dt_ist = dt_utc.astimezone(ist)
 
+        print(f"{symbol} | {dt_ist.strftime('%H:%M:%S')} | Found BUY/SELL pattern | Confidence: {confidence}")
         results.append({
             "Time": dt_ist.strftime('%Y-%m-%d %H:%M:%S'),
             "Action": action,
@@ -276,4 +277,4 @@ if st.session_state.app_running:
             st.info("No trades placed yet.")
 else:
     st.warning("App is stopped. Click ▶ Start App to begin.")
-        
+    
