@@ -1,6 +1,7 @@
 import streamlit as st
 from streamlit_autorefresh import st_autorefresh
 from datetime import datetime
+import pytz
 import requests
 import pytz
 import pandas as pd
@@ -10,7 +11,7 @@ from iqoptionapi.stable_api import IQ_Option
 
 API_KEY = 'a9efceaa17e34769bd79c9a40ae9bd67'
 TIMEZONE = 'Asia/Kolkata'
-REFRESH_INTERVAL_SEC = 59
+REFRESH_INTERVAL_SEC = 60
 
 AVAILABLE_PAIRS = [
     "EUR/USD", "GBP/USD", "USD/JPY",
@@ -24,7 +25,7 @@ VALID_USERS = {
 }
 
 def login():
-    st.title("🔐 Forex Signal App Login")
+    st.title("🔐 Forex Signal App Login💰")
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
     if st.button("Login"):
@@ -211,7 +212,9 @@ with st.sidebar:
 st_autorefresh(interval=10_000, key="keep_alive")
 
 # --- Main GUI ---
-st.info(f"⏱ Last Checked: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+ist = pytz.timezone('Asia/Kolkata')
+now_ist = datetime.now(ist)
+st.info(f"⏱ Last Checked: {now_ist.strftime('%Y-%m-%d %H:%M:%S')}")
 symbols = st.multiselect("Currency Pairs", AVAILABLE_PAIRS, default=["EUR/USD"])
 date_input = st.date_input("Select Date", datetime.now())
 
