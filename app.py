@@ -25,7 +25,7 @@ VALID_USERS = {
 }
 
 def login():
-    st.title("🔐 Forex Signal App Login💰")
+    st.title("🔐 Forex Signal App Login,")
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
     if st.button("Login"):
@@ -119,7 +119,11 @@ def run_signal_engine_gui(symbol, candles):
             continue
 
         results.append({
-            "Time": datetime.strptime(signal_time, '%Y-%m-%d %H:%M:%S').strftime('%Y-%m-%d %H:%M:%S'),
+            utc = pytz.timezone('UTC')
+ist = pytz.timezone('Asia/Kolkata')
+dt_utc = utc.localize(datetime.strptime(signal_time, '%Y-%m-%d %H:%M:%S'))
+dt_ist = dt_utc.astimezone(ist)
+"Time": dt_ist.strftime('%Y-%m-%d %H:%M:%S'),
             "Action": action,
             "Entry": entry_candle['datetime'],
             "Exit": exit_candle['datetime'],
